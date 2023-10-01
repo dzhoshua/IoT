@@ -78,9 +78,10 @@ void data_reading() {
     
     //commands for led
     if (command == 'a') { //for auto_mod
-      auto_mod = true;
-      hand_mod=false;
-      siren_mod=false;
+      if(siren_mod==false){
+        auto_mod = true;
+        hand_mod=false;
+      }
     }
     else if (command == 'h') { //for hand_mod
       auto_mod = false;
