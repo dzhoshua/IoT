@@ -47,7 +47,7 @@ void send_photo_data() {
 //LED
 void led_mods(){
   if(auto_mod){
-    if(val<1){
+    if(val<550){
       digitalWrite(12, HIGH);
     }else{
       digitalWrite(12, LOW);
