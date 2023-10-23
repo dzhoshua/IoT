@@ -9,6 +9,9 @@ void callback(char *topic, byte *payload, unsigned int length){
   for(int i=0; i<length;i++){
     Serial.print((char) payload[i]);
   }
+  int state = (int)payload[0]-(int)'0';
+  Serial.println(state);
+  digitalWrite(LED_BUILTIN, state);
   Serial.println("");
 }
 
