@@ -11,8 +11,8 @@ void setup(){
         server_init();
         init_MQTT();
     }
-    String topic = "esp8266_" + id() + "/command";
-    String state_topic = "esp8266_" + id() + "/state";
+    String topic = "esp8266_zlataveronika/command";
+    String state_topic = "esp8266_zlataveronika/state";
     mqtt_client.subscribe(topic.c_str());
     mqtt_client.publish(state_topic.c_str(), "hello");
     Serial.println("See me at " + state_topic);
