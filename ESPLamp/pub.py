@@ -1,7 +1,7 @@
 
 import time
 import paho.mqtt.client as paho
-import questionary
+//import questionary
 
 
 broker = 'broker.emqx.io'
@@ -11,7 +11,8 @@ client.connect(broker)
 client.loop_start()
 print("Publishing")
 
-topic = questionary.text("What is your topic?").ask()
+//topic = questionary.text("What is your topic?").ask()
+topic = "esp8266/zlataveronika"
 print(topic)
 
 i = 0
