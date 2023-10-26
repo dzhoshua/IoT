@@ -26,20 +26,22 @@ bool start_AP_mode(){
   return true;
 }
 
-bool start_client_mode(){
-  wifiMulti.addAP(CLI_SSID, CLI_PASS);
+bool start_client_mode(String login, String password){
+  Serial.println("I'm connecting to " + login);
+  wifiMulti.addAP(login.c_str(), password.c_str());
   while(wifiMulti.run() != WL_CONNECTED){
+    Serial.println("WiFi not connected!");
     delay(10);
   }
   return true;
 }
 
-bool init_WIFI(bool AP_mode){
+bool init_WIFI(bool AP_mode, String login, String password){
   if(AP_mode){
     start_AP_mode();
     ip = WiFi.softAPIP().toString();
   }else{
-    start_client_mode();
+    start_client_mode(login, password);
     ip = WiFi.localIP().toString();
   }
   Serial.println("IP address: " + ip);
