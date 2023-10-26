@@ -6,13 +6,15 @@ void callback(char *topic, byte *payload, unsigned int length){
   Serial.print("There is message on topic ");
   Serial.println(topic);
   Serial.println("Message is: ");
-  for(int i=0; i<length;i++){
-    Serial.print((char) payload[i]);
+  char cmd = (char) payload[0];
+  Serial.println(cmd);
+  if (cmd == '0') {
+    digitalWrite(LED_PIN, HIGH);
+    Serial.print("Led is down!"); 
+  } else {
+    digitalWrite(LED_PIN, LOW);
+    Serial.print("Led is up!");
   }
-  int state = (int)payload[0]-(int)'0';
-  Serial.println(state);
-  digitalWrite(LED_BUILTIN, state);
-  Serial.println("");
 }
 
 bool init_MQTT(){
