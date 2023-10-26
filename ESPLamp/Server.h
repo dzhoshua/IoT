@@ -2,20 +2,11 @@
 
 ESP8266WebServer server(WEB_SERVER_PORT);
 void handle_root(){
-    String page_code="<form action=\"/LED\" method=\"POST\">";
-    page_code += "<input type=\"submit\" value=\"Switch LED\"></form>";
+    String page_code = "<form action=\"/CONNECT\" method=\"POST\">";
+    page_code += "<input type=\"text\" name=\"ssid\" placeholder=\"ssid\">";
+    page_code += "<input type=\"passw\" name=\"passw\" placeholder=\"password\">";
+    page_code += "<input type=\"submit\"></form>";
     server.send(200, "text/html", page_code);
-}
-
-void handle_led(){
-    digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-    server.sendHeader("Location", "/");
-    server.send(303);
-}
-
-void handle_sensor(){
-    int val = analogRead(A0);
-    server.send(200, "text/html", String(val));
 }
 
 void handle_not_found(){
@@ -26,12 +17,17 @@ void handle_connect() {
     if (server.hasArg("ssid") && server.hasArg("passw")) {
         String ssid = server.arg("ssid");
         String passw = server.arg("passw");
-        Serial.println("Connecting to: " + passw);
+        Serial.println("Connecting to: " + ssid);
+        server.send(200, "text/html", "Connected");  
 
-        WiFi.begin(ssid.c_str(), passw.c_str());
-        server.send(200, "text/html", "Connected");   
+        bool res = init_WIFI(false, ssid.c_str(), passw.c_str());
+        if (res == true){
+            Serial.println("connect MQTT");
+            init_MQTT();
+            String topic = "esp8266/zlataveronika";
+            mqtt_client.subscribe(topic.c_str());
+    }
         delay(1000);
-        ESP.restart();
     }   else {
         server.send(200, "text/html", "Login or password error.");
     }
@@ -39,9 +35,7 @@ void handle_connect() {
 
 void server_init(){
     server.on("/", HTTP_GET, handle_root);
-    server.on("/LED", HTTP_POST, handle_led);
-    server.on("/SENSOR", HTTP_GET, handle_sensor);
-    server.on("/CONNECT", HTTP_GET, handle_connect);
+    server.on("/CONNECT", HTTP_POST, handle_connect);
     server.onNotFound(handle_not_found);
     server.begin();
     Serial.print("Server started on port ");
