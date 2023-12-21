@@ -12,8 +12,9 @@ bool flag = false;
 
 void setup() {
   Serial.begin(9600);
-
-  Serial.println("Enter the calibration range (lower and upper bounds).");
+  pinMode(trig_pin, OUTPUT);
+  pinMode(echo_pin, INPUT);
+  Serial.println("Enter the calibration range(lower and upper bounds).");
 
   while (!Serial.available());
   String input = Serial.readStringUntil('\n');
@@ -38,7 +39,6 @@ void distance() {
   int sensor_val = analogRead(sensor_pin);
   // Convert the analog value to distance DEPENDS ON SENSOR
   float distance = analogRead(sensor_pin) * 5 / 1024;
-  Serial.print("Distance: ");
   Serial.print(distance);
   Serial.println(" cm");
   delay(100);
@@ -65,7 +65,7 @@ void calibrate(int lower, int upper) {
         x[index] = sensorVal;
         index++;
         count++;
-        Serial.println("Data is being collected...");
+        Serial.println("Data collection in process...");
       }
     }
 
