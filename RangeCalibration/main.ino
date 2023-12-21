@@ -65,7 +65,7 @@ void calibrate(int lower, int upper) {
         x[index] = sensorVal;
         index++;
         count++;
-        Serial.println("Data collection in process...");
+        Serial.println("Data is being collected...");
       }
     }
 
